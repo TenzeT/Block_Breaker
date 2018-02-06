@@ -8,6 +8,7 @@ public class Brick : MonoBehaviour
     public AudioClip crack;
     public Sprite[] hitSprites;
     public LevelManager levelManager;
+    private ScoreScript scoreScript;
     private int timesHit;
     private bool isBreakable;
 
@@ -22,6 +23,7 @@ public class Brick : MonoBehaviour
         }
         timesHit = 0;
         levelManager = (LevelManager)FindObjectOfType(typeof(LevelManager));
+        scoreScript = (ScoreScript)FindObjectOfType(typeof(ScoreScript));
     }
 
     // Check if block is tagged Breakable, if so call HandleHits()
@@ -30,7 +32,10 @@ public class Brick : MonoBehaviour
         // Play sound where brick is
         AudioSource.PlayClipAtPoint(crack, transform.position);
         if (isBreakable == true)
+        {
+            print("Call handle");
             HandleHits();
+        }
     }
 
     // Increment number of times hit, if necessary, destroy block and decrement breakable countr
@@ -42,6 +47,7 @@ public class Brick : MonoBehaviour
         {
             breakableCount--;
             levelManager.BrickDestroyed();
+            scoreScript.UpdateDestroyedBricks();
             Destroy(gameObject);
         }
         else
@@ -59,11 +65,4 @@ public class Brick : MonoBehaviour
         }
 
     }
-
-    // TODO Remove when we can win
-    void SimulateWin()
-    {
-        levelManager.LoadNextLevel();
-    }
-
 }

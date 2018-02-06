@@ -12,7 +12,6 @@ public class Paddle : MonoBehaviour
     void Start()
     {
         ball = GameObject.FindObjectOfType<Ball>();
-        print(ball);
     }
 
     // Update is called once per frame
